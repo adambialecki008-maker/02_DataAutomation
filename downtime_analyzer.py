@@ -1,10 +1,9 @@
-def analyze_downtime(events: list):
-
+def analyze_downtime(events: list) -> dict:
     events_passed, errors = validated_events(events)
     machines = create_machines_list(events_passed)
     rejected = len(errors)
-    summary = {"machines": machines, "rejected": rejected}
-    return summary
+    report = {"machines": machines, "rejected": rejected}
+    return report
 
 
 def validated_events(events: list) -> tuple[list, list]:
