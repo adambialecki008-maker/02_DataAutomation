@@ -1,0 +1,12 @@
+[project]
+name = "02_dataautomation"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "openpyxl>=3.1.5",
+    "pathlib>=1.0.1",
+    "pytest>=9.2.0",
+]
