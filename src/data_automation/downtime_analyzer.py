@@ -2,7 +2,7 @@ def analyze_downtime(events: list) -> dict:
     events_passed, errors = validated_events(events)
     machines = create_machines_list(events_passed)
     rejected = len(errors)
-    report = {"machines": machines, "rejected": rejected}
+    report = {"machines": machines, "rejected": rejected, "errors": errors}
     return report
 
 
@@ -52,5 +52,4 @@ def create_machines_list(events: list) -> dict:
         else:
             machines[name]["count"] += 1
             machines[name]["total_stop_s"] += duration
-
     return machines

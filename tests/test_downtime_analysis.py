@@ -1,4 +1,4 @@
-from downtime_analyzer import analyze_downtime, validated_events
+from data_automation.downtime_analyzer import analyze_downtime, validated_events
 
 
 def test_validated_events_rejects_events_if_no_id():
@@ -126,6 +126,12 @@ def test_analyze_downtime_returns_expected_dictionary():
             "CNC_2": {"count": 1, "total_stop_s": 90},
         },
         "rejected": 4,
+        "errors": [
+            "Skipped event because double id",
+            "Wrong duration_s value for event id : e4",
+            "Skipped event because no machine for id: e5",
+            "Wrong duration_s format for event id : e6",
+        ],
     }
     results = analyze_downtime(events)
     assert results == expected_list
@@ -133,6 +139,6 @@ def test_analyze_downtime_returns_expected_dictionary():
 
 def test_analyze_downtime_returns_empty():
     events = []
-    expected_list = {"machines": {}, "rejected": 0}
+    expected_list = {"machines": {}, "rejected": 0, "errors": []}
     results = analyze_downtime(events)
     assert results == expected_list

@@ -1,4 +1,7 @@
-from csv_reposotory import validate_headers, load_events_from_csv
+from data_automation.repositories.csv_reposotory import (
+    validate_headers,
+    load_events_from_csv,
+)
 from pathlib import Path
 import pytest
 
@@ -17,17 +20,15 @@ def test_validate_headers_accepts_expected_headers():
 
 def test_load_files_from_csv_loads_dict_list():
     csv_path = BASE_DIR / "fixtures" / "downtime_200_test.csv"
-    events = load_events_from_csv(csv_path)
-    assert len(events) == 200
+    events, errors = load_events_from_csv(csv_path)
+    assert len(events) == 189
+    assert len(errors) == 11
     durations = set()
-    for event in events:
-        durations.add(event["duration_s"])
-    assert "abc" in durations
 
 
 def test_load_files_from_csv_returns_0_on_empty_file():
     csv_path = BASE_DIR / "fixtures" / "downtime_empty.csv"
-    events = load_events_from_csv(csv_path)
+    events, errors = load_events_from_csv(csv_path)
     assert len(events) == 0
 
 
@@ -36,3 +37,18 @@ def test_load_files_from_csv_raises_if_no_file():
 
     with pytest.raises(FileNotFoundError):
         load_events_from_csv(csv_path)
+
+
+def test_load_files_from_csv_raises_and_returns_expecte_error_msg():
+    csv_path = BASE_DIR / "fixtures" / "downtime_mixed_validation.csv"
+    events, errors = load_events_from_csv(csv_path)
+    expected_errors = [
+        "Error invalid literal for int() with base 10: 'abc' in row 3",
+        "Error invalid literal for int() with base 10: '' in row 5",
+        "Error invalid literal for int() with base 10: '12.5' in row 7",
+        "Error invalid literal for int() with base 10: 'nan' in row 8",
+        "Error invalid literal for int() with base 10: 'inf' in row 9",
+    ]
+    assert len(errors) == 5
+    assert len(events) == 13
+    assert errors == expected_errors

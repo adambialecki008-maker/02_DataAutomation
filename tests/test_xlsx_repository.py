@@ -1,19 +1,18 @@
-from xlsx_repository import export_downtime_to_excel
-from openpyxl import load_workbook, workbook
+from data_automation.repositories.xlsx_repository import export_downtime_to_excel
+from openpyxl import load_workbook
 from pathlib import Path
-from main import generate_report
+from data_automation.main import generate_report
 from datetime import date
 import pytest
-
-BASE_DIR = Path(__file__).resolve().parent
-source_path = BASE_DIR / "fixtures" / "downtime_200_test.csv"
 
 
 @pytest.fixture
 def report_sheet(tmp_path):
+    BASE_DIR = Path(__file__).resolve().parent
+    file_path = BASE_DIR / "fixtures" / "downtime_200_test.csv"
     output_path = tmp_path / "test_report_path"
     output_path.mkdir()
-    report = generate_report(source_path)
+    report = generate_report(file_path)
     export_downtime_to_excel(report, output_path)
     today = date.today()
     title = f"Downtime Report_{today}"

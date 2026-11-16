@@ -2,7 +2,7 @@ import csv
 from pathlib import Path
 
 
-def load_events_from_csv(path: Path) -> list[dict]:
+def load_events_from_csv(path: Path) -> tuple[list[dict], list[str]]:
     results = []
     errors = []
     with open(path, newline="", encoding="utf-8") as file:
@@ -12,14 +12,15 @@ def load_events_from_csv(path: Path) -> list[dict]:
             raise ValueError(
                 f"File has incorrect headers. Expected: ['id', 'machine', 'duration_s'], Got: {headers}"
             )
-        for row in reader:
+        for i, row in enumerate(reader, start=2):
             try:
                 row["duration_s"] = int(row["duration_s"])
+                results.append(row)
             except (ValueError, KeyError, TypeError) as e:
-                errors.append(e)
-            results.append(row)
+                error_msg = f"Error {e} in row {i}"
+                errors.append(error_msg)
 
-    return results
+    return results, errors
 
 
 def validate_headers(headers) -> bool:
