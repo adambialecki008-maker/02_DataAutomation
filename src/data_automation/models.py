@@ -6,7 +6,7 @@ class MachineStats(TypedDict):
     total_stop_s: int
 
 
-class AnalysisReporrt(TypedDict):
+class AnalysisReport(TypedDict):
     machines: dict[str, MachineStats]
     rejected: int
     errors: list[str]
@@ -21,3 +21,9 @@ class FinalReport(TypedDict):
     machines: dict[str, MachineStats]
     rejected: int
     errors: ReportErrors
+
+
+class ParsedEvent(TypedDict):
+    id: str | None
+    machine: str | None
+    duration_s: int

@@ -1,11 +1,11 @@
-from data_automation.models import MachineStats, AnalysisReporrt
+from data_automation.models import MachineStats, AnalysisReport, ParsedEvent
 
 
-def analyze_downtime(events: list) -> AnalysisReporrt:
+def analyze_downtime(events: list) -> AnalysisReport:
     events_passed, errors = validated_events(events)
     machines = create_machines_list(events_passed)
     rejected = len(errors)
-    report = AnalysisReporrt(machines=machines, rejected=rejected, errors=errors)
+    report = AnalysisReport(machines=machines, rejected=rejected, errors=errors)
     return report
 
 

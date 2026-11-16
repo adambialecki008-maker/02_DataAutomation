@@ -1,8 +1,9 @@
 import csv
 from pathlib import Path
+from data_automation.models import ParsedEvent
 
 
-def load_events_from_csv(path: Path) -> tuple[list[dict], list[str]]:
+def load_events_from_csv(path: Path) -> tuple[list[ParsedEvent], list[str]]:
     results = []
     errors = []
     with open(path, newline="", encoding="utf-8") as file:
