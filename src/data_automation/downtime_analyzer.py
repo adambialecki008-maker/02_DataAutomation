@@ -1,8 +1,11 @@
-def analyze_downtime(events: list) -> dict:
+from data_automation.models import MachineStats, AnalysisReporrt
+
+
+def analyze_downtime(events: list) -> AnalysisReporrt:
     events_passed, errors = validated_events(events)
     machines = create_machines_list(events_passed)
     rejected = len(errors)
-    report = {"machines": machines, "rejected": rejected, "errors": errors}
+    report = AnalysisReporrt(machines=machines, rejected=rejected, errors=errors)
     return report
 
 
@@ -42,13 +45,13 @@ def validate_single_event(event, checked_id: set) -> bool:
     return True
 
 
-def create_machines_list(events: list) -> dict:
-    machines = {}
+def create_machines_list(events: list) -> dict[str, MachineStats]:
+    machines: dict[str, MachineStats] = {}
     for event in events:
         duration = event["duration_s"]
         name = event["machine"]
         if name not in machines:
-            machines[name] = {"count": 1, "total_stop_s": duration}
+            machines[name] = MachineStats(count=1, total_stop_s=duration)
         else:
             machines[name]["count"] += 1
             machines[name]["total_stop_s"] += duration

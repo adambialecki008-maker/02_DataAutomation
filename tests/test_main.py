@@ -10,7 +10,7 @@ def test_generate_report_succes():
     report = generate_report(file_path)
     machines = report["machines"]
     rejected = report["rejected"]
-    errors_import = report["errors"]["import"]
+    errors_import = report["errors"]["importing"]
     errors_validation = report["errors"]["validation"]
     accepted = sum(machine["count"] for machine in machines.values())
     assert rejected == 11

@@ -5,9 +5,10 @@ from openpyxl.styles import Font, PatternFill
 from copy import copy
 from openpyxl.worksheet.worksheet import Worksheet
 from openpyxl.utils import get_column_letter
+from data_automation.models import FinalReport
 
 
-def export_downtime_to_excel(report: dict, output_path: Path) -> None:
+def export_downtime_to_excel(report: FinalReport, output_path: Path) -> None:
     wb = Workbook()
     ws = wb.active
     today = date.today()

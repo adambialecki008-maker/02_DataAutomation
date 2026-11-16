@@ -1,14 +1,15 @@
 from pathlib import Path
 from data_automation.repositories.csv_reposotory import load_events_from_csv
 from data_automation.downtime_analyzer import analyze_downtime
+from data_automation.models import ReportErrors, FinalReport
 
 
-def generate_report(source_path: Path) -> dict:
+def generate_report(source_path: Path) -> FinalReport:
     events, import_errors = load_events_from_csv(source_path)
     analyze = analyze_downtime(events)
     rejected = analyze["rejected"] + len(import_errors)
-    errors = {"import": import_errors, "validation": analyze["errors"]}
-    report = {"machines": analyze["machines"], "rejected": rejected, "errors": errors}
+    errors = ReportErrors(importing=import_errors, validation=analyze["errors"])
+    report = FinalReport(machines=analyze["machines"], rejected=rejected, errors=errors)
     return report
 
 

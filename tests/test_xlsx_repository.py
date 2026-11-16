@@ -4,6 +4,7 @@ from pathlib import Path
 from data_automation.main import generate_report
 from datetime import date
 import pytest
+from data_automation.models import FinalReport, MachineStats, ReportErrors
 
 
 @pytest.fixture
@@ -50,10 +51,9 @@ def test_export_downtime_to_excel_returns_correct_data_for_rejected(report_sheet
 
 
 def test_export_downtime_to_excel_returns_correct_data_for_empty_sheet(tmp_path):
-    report = {
-        "machines": {},
-        "rejected": 0,
-    }
+    machines = {}
+    errors = ReportErrors(validation=[], importing=[])
+    report = FinalReport(machines=machines, rejected=0, errors=errors)
     output_path = tmp_path / "test_report_path"
     output_path.mkdir()
     export_downtime_to_excel(report, output_path)
