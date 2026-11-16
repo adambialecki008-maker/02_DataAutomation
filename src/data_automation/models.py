@@ -13,8 +13,8 @@ class AnalysisReporrt(TypedDict):
 
 
 class ReportErrors(TypedDict):
-    importing: list
-    validation: list
+    importing: list[str]
+    validation: list[str]
 
 
 class FinalReport(TypedDict):
